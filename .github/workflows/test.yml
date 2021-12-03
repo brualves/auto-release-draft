@@ -20,4 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Create a release draft for a version tag 
+      id: create-release-draft
     - uses: ./
+    - name: Print the URL of the release draft
+      run: echo ${{ steps.create-release-draft.outputs.release-url}}
