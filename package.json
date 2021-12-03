@@ -26,7 +26,8 @@
   "homepage": "https://github.com/brualves/auto-release-draft#readme",
   "dependencies": {
     "@actions/core": "^1.2.5",
-    "@actions/github": "^5.0.0"
+    "@actions/github": "^5.0.0",
+    "semver": "^7.3.5"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.31.1",
