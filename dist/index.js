@@ -32,29 +32,6 @@ module.exports = { getCreatedTag : getCreatedTag }
 
 /***/ }),
 
-/***/ 2932:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-const core = __nccwpck_require__(2186)
-const event  = __nccwpck_require__(390)
-
-// most @actions toolkit packages have async methods
-async function run() {
-  try {
-
-    const tag = event.getCreatedTag()
-
-    core.setOutput( 'release-url', 'https://example.com')
-  } catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-module.exports = { run : run }
-
-
-/***/ }),
-
 /***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -8493,13 +8470,29 @@ module.exports = require("zlib");
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(2932);
-/******/ 	module.exports = __webpack_exports__;
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+const core = __nccwpck_require__(2186)
+const event  = __nccwpck_require__(390)
+
+// most @actions toolkit packages have async methods
+async function run() {
+  try {
+
+    const tag = event.getCreatedTag()
+
+    core.setOutput( 'release-url', 'https://example.com')
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+}
+
+run()
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map
