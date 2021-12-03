@@ -1,13 +1,8 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
-inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
-    required: true
-    default: '1000'
+name: 'Auto Release Draft'
+description: 'Drafts a Github release with the changes introduce by a version tag'
 outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+  release-url: # output will be available to future steps
+    description: 'The URL of the GitHub release that was drafted'
 runs:
   using: 'node12'
   main: 'dist/index.js'
