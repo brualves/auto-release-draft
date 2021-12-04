@@ -140,6 +140,47 @@ module.exports = git
 
 /***/ }),
 
+/***/ 6535:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+const github  = __nccwpck_require__(5438)
+const core    = __nccwpck_require__(2186)
+const version = __nccwpck_require__(3195)
+
+const ghub = {}
+
+ghub.createDraftRelease = async function ( versionTag, repoToken , changeLog ) {
+
+    const octokit = new github.getOctokit( repoToken )
+
+    const response = await octokit.repo.createRelease( { 
+        owner : github.context.repo.owner,
+        repo : github.context.repo.repo,
+        tag_name : versionTag,
+        name : version.removePrefix( versionTag ), 
+        body : changeLog ,
+        prerelease : version.isPrerelease( versionTag ),
+        draft : true 
+    })
+
+    if (response.status != 201 ) {
+        throw new Error( `Failed to create the release: ${ response.status }`)        
+    }
+
+    core.info( `Created release draft ${ response.data.name }`)
+
+    return response.data.html_url 
+}
+
+module.exports = ghub 
+
+
+
+/***/ }),
+
 /***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -12968,17 +13009,23 @@ const core = __nccwpck_require__(2186)
 const event  = __nccwpck_require__(390);
 const version = __nccwpck_require__(3195);
 const git = __nccwpck_require__(5913);
+const github = __nccwpck_require__(6535);
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
 
+    const token = core.getInput('repo-token')
     const tag = event.getCreatedTag()
-
+    let releaseURL = ''
+    
     if ( tag && !version.isSemVer( tag ) ) {
        const changelog = await git.getChangesIntroducedByTag( tag )
+       releaseURL = await github.createDraftRelease( token, tag, changelog )
     }
-    core.setOutput( 'release-url', 'https://example.com')
+    
+    core.setOutput( 'release-url', releaseURL )
+
   } catch (error) {
     core.setFailed(error.message);
   }

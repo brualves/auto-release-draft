@@ -1,5 +1,9 @@
 name: 'Auto Release Draft'
 description: 'Drafts a Github release with the changes introduce by a version tag'
+inputs:
+  repo-token:
+    description: 'The GitHub OAuth Token used to authenticate to the current repository'
+    required: true
 outputs:
   release-url: # output will be available to future steps
     description: 'The URL of the GitHub release that was drafted'
